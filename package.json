@@ -1,0 +1,12 @@
+{
+  "name": "tiny-vue",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel index.html"
+  },
+  "keywords": [],
+  "author": "uniquexiaobai",
+  "license": "ISC"
+}
