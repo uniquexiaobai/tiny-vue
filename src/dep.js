@@ -5,14 +5,17 @@ export default class Dep {
     this.id = uid++;
     this.subs = [];
   }
+
   depend() {
     if (Dep.target) {
       Dep.target.addDep(this);
     }
   }
+
   notify() {
     this.subs.slice().forEach(watcher => watcher.update());
   }
+
   addSub(watcher) {
     this.subs.push(watcher);
   }

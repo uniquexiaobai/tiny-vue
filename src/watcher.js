@@ -5,17 +5,20 @@ let uid = 0;
 export default class Watcher {
   constructor(vm, exprOrFn, cb, options) {
     this.vm = vm;
+
     if (typeof exprOrFn === 'function') {
       this.getter = exprOrFn;
     } else {
       this.getter = this.parsePath(exprOrFn);
     }
+
     if (options) {
       this.lazy = !!options.lazy;
       this.user = !!options.user;
     } else {
       this.user = this.lazy = false;
     }
+
     this.dirty = this.lazy;
     this.cb = cb;
     this.options = options;
@@ -24,6 +27,7 @@ export default class Watcher {
     this.depsId = new Set();
     this.value = this.lazy ? undefined : this.get();
   }
+
   get() {
     const vm = this.vm;
     pushTarget(this);
@@ -31,6 +35,7 @@ export default class Watcher {
     popTarget();
     return value;
   }
+
   addDep(dep) {
     let id = dep.id;
     if (!this.depsId.has(id)) {
@@ -39,6 +44,7 @@ export default class Watcher {
       dep.addSub(this);
     }
   }
+
   update() {
     if (this.lazy) {
       this.dirty = true;
@@ -46,15 +52,18 @@ export default class Watcher {
       this.run();
     }
   }
+
   evaluate() {
     this.value = this.get();
     this.dirty = false;
   }
+
   depend() {
     for (let i = this.deps.length - 1; i >= 0; i--) {
       this.deps[i].depend();
     }
   }
+
   run() {
     const value = this.get();
     const oldValue = this.value;
@@ -70,6 +79,7 @@ export default class Watcher {
       this.cb.call(this.vm, value, oldValue);
     }
   }
+
   parsePath(path) {
     const segments = path.split('.');
     return function (obj) {

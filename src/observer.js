@@ -59,11 +59,13 @@ export default class Observer {
       this.wark(value);
     }
   }
+
   wark(data) {
     Object.keys(data).forEach(key => {
       defineReactive(data, key, data[key]);
     });
   }
+
   observeArray(array) {
     array.forEach(val => {
       observe(val);
@@ -72,7 +74,7 @@ export default class Observer {
 }
 
 export function observe(data) {
-  if (typeof data !== 'object' && data != null) return;
+  if (typeof data !== 'object' || data === null) return;
 
   let ob;
   if (
@@ -83,6 +85,7 @@ export function observe(data) {
   } else {
     ob = new Observer(data);
   }
+
   return ob;
 }
 
@@ -94,8 +97,10 @@ export function defineReactive(data, key, value) {
     get() {
       if (Dep.target) {
         dep.depend();
+
         if (childOb) {
           childOb.dep.depend();
+
           if (Array.isArray(value)) {
             dependArray(value);
           }
@@ -103,10 +108,12 @@ export function defineReactive(data, key, value) {
       }
       return value;
     },
+
     set(newValue) {
       if (newValue === value || (newValue !== newValue && value !== value)) {
         return;
       }
+
       observe(newValue);
       value = newValue;
       dep.notify();

@@ -10,12 +10,15 @@ export function initMixin(TinyVue) {
   TinyVue.prototype._init = function (options) {
     const vm = this;
     this.$options = options;
+
     if (options.data) {
       initState(vm);
     }
+
     if (options.computed) {
       initComputed(vm);
     }
+
     if (options.watch) {
       initWatch(vm);
     }
